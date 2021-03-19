@@ -1,0 +1,60 @@
+2021/03/10
+	First installment in formal writing in a .txt file, but much work has
+	already been done. Much of the leg work for creating a 'formal' idea was
+	done during Quarantine in the Universe notebook. I really have no idea how
+	much time was put into that development process. I kinda just sat around
+	for days on the couch and wrote my thoughts down as Colin played video
+	games. 
+
+	Even before that I've had the idea to create essentially an external
+	'Ideal self' since second year. Notably the conversation w/ Sam in Global
+	where I had the idea of someone on your shoulder.
+
+	Anyways, the real first part of this project comes not in what code I've
+	written, but in the time I've put into thinking about what I want. That is
+	more formally written out in the Universe notebook, so won't be discussed
+	here.
+
+	The reason I have now begun to document this in a .txt file is because I
+	have a formal approach to the first part of the program : Reminders.
+
+	Essentially I've outlined the main tasks that need to get done, and
+	exactly what that looks like in terms of what technology I need to use. 
+
+2021/03/11
+	Went through the hassle of find then downloading the right technologies
+	Namely, got postgresql pip, and psycopg2 installed. I need postgresql in 
+	order to even establish connections to other postgres databases (I think??)
+	I needed pip in order to get psycopg2, which is a library that handles
+	postgres connections through Python. Planning to make a proof of concept
+	program locally to Create / Update / Query the db. Once that is polished,
+	I'll ship it over to Alexa. 
+
+	Ran into a minor issue which is cause for some reconsideration. It's one
+	thing to connect to the db from the csh machines / rit wifi, but another
+	to connect from another network. This means I would have to authenticate
+	into the RIT / CSH network and then provide authentication to the db. SO
+		1. I need to find some workaround for this. Potentially ask #opcomm
+		2. I should just do all development on CSH servers, which includes
+		hosting the Alexa backend.
+
+2021/03/13
+	So looks like port forwarding might work? So, follow this logic :
+		In order to connect to universedb regularly, how do I do that?
+		1. ssh onto shell using ender
+		2. Connect to universe using universe creds
+	Tried the above and it uh failed.
+
+2021/03/14
+	So the RTP's are working on the user machines today, so can't really even
+	test the connectivity if I wanted to. Will just need to troubleshoot the
+	above solutiona little bit. 
+
+	Instead I worked on the logic for the prioritization function. Initial idea
+	uses the Knapsack Problem to put the most amount of value into a given time
+	period. Each reminder has a weight, which is the time it takes to complete
+	the task. Each reminder also has a priority / value associated with it. 
+	Priority is determined by an equation = .8(expiration_date) + .2(creation_date)
+	Seems alright after some very brief testing. Going to implement the actual
+	knapsack algorithm shortly. 
+
