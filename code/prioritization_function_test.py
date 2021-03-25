@@ -37,17 +37,7 @@ def prioritize(reminders):
 		dict<int (r_id) : int (priority)>
 			Dictionary mapping reminder_id to their priority
 	"""
-	
-	"""
-		What we're actually going to do
-		- Take in a list of reminders as input, and that's it
-		- Make hash table which maps reminder ID to priority value
-		- Make two lists, each with Reminder ID and creation date / expiration date respectively
-		- Sort those two lists based off of the dates
-		- Calculate the priority based off of these sorted values
-		- Put priorities into hash table, associated with ID's
-		- Return hash table?
-	"""
+
 	# Dictionary mapping reminder_id's to their priorities
 	priorities = {}
 	# 2d list of reminder_id and expiration date 
@@ -86,6 +76,31 @@ def prioritize(reminders):
 	
 	return priorities
 
+def knapsack_indv(n, c, w, W):
+	"""
+		Performs knapsack algorithm to determine which Reminders can / should
+		be done 
+
+		Parameters
+		----------
+		n : int
+			The number of Reminders considered
+		c : list<float> 
+			vetor of values associated with Reminders (From prioritize())
+			Sorted by w
+		w : list<int>
+			vector of complete_time (weights) associated with Reminders	
+			Assumed that this is sorted in ascending order
+		W : int
+			The total available time (total weight) at the time 
+		
+		Returns
+		-------
+		list<int>
+			List of indices essentially, which are mapped to r_id's at index
+			specified by sorted r_id's by complete_time
+	"""
+
 def main():
 	# Lets create some reminders
 	reminder_1 = Reminder(1, "dog", 2, 6, 1)
@@ -95,7 +110,5 @@ def main():
 	reminders = [reminder_1, reminder_2, reminder_3, reminder_4]
 	p = prioritize(reminders)
 	print(p)
-
-
 
 main()
