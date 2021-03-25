@@ -58,3 +58,8 @@
 	Seems alright after some very brief testing. Going to implement the actual
 	knapsack algorithm shortly. 
 
+2021/03/18	
+	Tried to get prioritization function working. Unknown as to why it fails
+
+2021/03/24
+	Prioritization function works! Was just a small syntax error. 
