@@ -62,9 +62,9 @@ def prioritize(reminders):
 
 	# Sort expiration and creation lists by their exp and cre dates 
 	expirations.sort(key = lambda x:x[1], reverse = True)
-	print("Expirations : " + str(expirations))
+	#print("Expirations : " + str(expirations))
 	creations.sort(key = lambda x:x[1])
-	print("Creations: " + str(creations))
+	#print("Creations: " + str(creations))
 	
 	# Calculate priorities
 	num_priorities = len(expirations)
@@ -106,17 +106,21 @@ def knapsack_indv(n, c, w, W):
 			specified by sorted r_id's by complete_time
 	"""
 	# Initialize solution matrix
-	S = [[0] * (W + 1)] * (n + 1)
-	
+	S = [[0 for i in range(W + 1)] for i in range(n + 1)]
+
 	# Iterate through possible times / weights 
 	for v in range(1,(W + 1)):
 		# Iterate through each Reminder 
 		for j in range(1, (n + 1)):
 			S[j][v] = S[j - 1][v]
-			w_j = w[j - 1]
+			w_j = int(w[j - 1])
 			c_j = c[j - 1]
-			if (w_j <= v) and (S[j - 1][v - w_j] > S[j][v]):
-				S[j][v] = S[j - 1][v - w_j] + c_j 
+			new_val = (S[j - 1][v - w_j]  + c_j) 
+			cur_val = S[j][v]
+			# If weight of new item less than current weight and
+			# added value greater than current, include it
+			if (w_j <= v) and (new_val > cur_val):
+				S[j][v] = round(new_val,2)
 
 	# Display the Solution matrix
 	for i in range(0, (n + 1)):
@@ -133,7 +137,8 @@ def main():
 	reminder_4 = Reminder(4, "shark", 9, 4, 10)
 	reminders = [reminder_1, reminder_2, reminder_3, reminder_4]
 	for reminder in reminders:
-		print(reminder)
+		#print(reminder)
+		pass
 
 	# And generate their priorities 
 	priorities = prioritize(reminders)
@@ -153,8 +158,10 @@ def main():
 	print("w: " + str(w))
 
 	# Establish other knapsack paramters
-	W = 10 
+	W = 5 
 	n = len(reminders)
+
+	knapsack_indv(n, c, w, W)
 
 
 
