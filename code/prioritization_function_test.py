@@ -22,6 +22,11 @@ class Reminder:
 		self.expiration = expiration
 		self.complete_time = complete_time
 		self.creation_date = creation_date
+
+	def __repr__(self):
+		return "Reminder(r_id : {}, description : {}, expiration : {}, complete_time : {}, creation_date : {})".format(
+				self.r_id, self.description, self.expiration,
+				self.complete_time, self.creation_date)
 	
 def prioritize(reminders):
 	"""
@@ -57,9 +62,9 @@ def prioritize(reminders):
 
 	# Sort expiration and creation lists by their exp and cre dates 
 	expirations.sort(key = lambda x:x[1], reverse = True)
-	#print("Expirations : " + str(expirations))
+	print("Expirations : " + str(expirations))
 	creations.sort(key = lambda x:x[1])
-	#print("Creations: " + str(creations))
+	print("Creations: " + str(creations))
 	
 	# Calculate priorities
 	num_priorities = len(expirations)
@@ -71,8 +76,8 @@ def prioritize(reminders):
 		exp_value = .8 * i
 		cre_value = .2 * i
 		# Update weight for that ReminderID
-		priorities[exp_id] = priorities[exp_id] + exp_value
-		priorities[cre_id] = priorities[cre_id] + cre_value
+		priorities[exp_id] = round(priorities[exp_id] + exp_value, 2)
+		priorities[cre_id] = round(priorities[cre_id] + cre_value, 2)
 	
 	return priorities
 
@@ -122,11 +127,14 @@ def knapsack_indv(n, c, w, W):
 
 def main():
 	# Lets create some reminders
-	reminder_1 = Reminder(1, "dog", 2, 7, 1)
-	reminder_2 = Reminder(2, "cat", 8, 4, 3)
-	reminder_3 = Reminder(3, "wolf", 1, 5, 2)
+	reminder_1 = Reminder(1, "dog", 4, 2, 1)
+	reminder_2 = Reminder(2, "cat", 8, 6, 3)
+	reminder_3 = Reminder(3, "wolf", 5, 3, 2)
 	reminder_4 = Reminder(4, "shark", 9, 4, 10)
 	reminders = [reminder_1, reminder_2, reminder_3, reminder_4]
+	for reminder in reminders:
+		print(reminder)
+
 	# And generate their priorities 
 	priorities = prioritize(reminders)
 	print("priorities : " + str(priorities))
