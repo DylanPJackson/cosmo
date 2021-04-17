@@ -126,16 +126,34 @@ def knapsack_indv(n, c, w, W):
 	for i in range(0, (n + 1)):
 		print(S[i])
 
-	return S[n][W]
+	# List of indices to be returned
+	inds = []
+	# Vars for traversing back through S 
+	rev_W = W
+	# Traverse back through S to find included Reminders 
+	for i in range(n,-1,-1):
+		# Get weight and value of given Reminder
+		w_n = int(w[i - 1])
+		c_n = int(c[i - 1])
+		# If weight of given item is greater than alloted, cant have neg weight
+		if (rev_W - w_n) < 0:
+			continue
+		prev_cost = S[i - 1][rev_W - w_n] + c_n
+		if prev_cost >= S[i - 1][rev_W]:
+			inds = [i] + inds	
+			rev_W -= w_n
+
+	return inds 
 		
 
 def main():
 	# Lets create some reminders
-	reminder_1 = Reminder(1, "dog", 4, 2, 1)
-	reminder_2 = Reminder(2, "cat", 8, 6, 3)
-	reminder_3 = Reminder(3, "wolf", 5, 3, 2)
-	reminder_4 = Reminder(4, "shark", 9, 4, 10)
-	reminders = [reminder_1, reminder_2, reminder_3, reminder_4]
+	reminder_1 = Reminder(1, "dog", 3, 3, 8)
+	reminder_2 = Reminder(2, "cat", 6, 4, 2)
+	reminder_3 = Reminder(3, "fish", 4, 2, 10)
+	reminder_4 = Reminder(4, "towel", 8, 6, 7)
+	reminder_5 = Reminder(5, "york", 2, 1, 5)
+	reminders = [reminder_1, reminder_2, reminder_3, reminder_4, reminder_5]
 	for reminder in reminders:
 		#print(reminder)
 		pass
@@ -144,12 +162,21 @@ def main():
 	priorities = prioritize(reminders)
 	print("priorities : " + str(priorities))
 
+	# And reverse_priorities dict to map value back to r_id
+	rev_prior = {}
+	for r_id in priorities.keys():
+		val = priorities[r_id]
+		rev_prior[val] = r_id 
+	print("rev_prior : " + str(rev_prior))
+
 	# Time to generate the value and weight lists
 	r_ids = list(priorities.keys())
 	r_ids.sort()
 	c_w = []
+	comp_ids = {} 
 	for r_id in r_ids:
-		c_w += [[priorities[r_id], reminders[r_id - 1].complete_time]]	
+		c_w += [[priorities[r_id], reminders[r_id - 1].complete_time, r_id]]	
+		
 	c_w.sort(key = lambda x:x[1])
 	n_c_w = np.array(c_w)
 	c = list(n_c_w[:,0])
@@ -161,8 +188,13 @@ def main():
 	W = 5 
 	n = len(reminders)
 
-	knapsack_indv(n, c, w, W)
-
+	inds = knapsack_indv(n, c, w, W)
+	print("inds: " + str(inds))
+	# Included Reminder ID's
+	inc_ids = []
+	for ind in inds:
+		inc_ids.append(rev_prior[c[ind - 1]])
+	print("Included Reminder ID's : " + str(inc_ids))
 
 
 main()
