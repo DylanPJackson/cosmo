@@ -57,9 +57,9 @@ def prioritize(reminders):
 
 	# Sort expiration and creation lists by their exp and cre dates 
 	expirations.sort(key = lambda x:x[1], reverse = True)
-	print("Expirations : " + str(expirations))
+	#print("Expirations : " + str(expirations))
 	creations.sort(key = lambda x:x[1])
-	print("Creations: " + str(creations))
+	#print("Creations: " + str(creations))
 	
 	# Calculate priorities
 	num_priorities = len(expirations)
@@ -86,7 +86,7 @@ def knapsack_indv(n, c, w, W):
 		n : int
 			The number of Reminders considered
 		c : list<float> 
-			vetor of values associated with Reminders (From prioritize())
+			vector of values associated with Reminders (From prioritize())
 			Sorted by w
 		w : list<int>
 			vector of complete_time (weights) associated with Reminders	
@@ -100,15 +100,54 @@ def knapsack_indv(n, c, w, W):
 			List of indices essentially, which are mapped to r_id's at index
 			specified by sorted r_id's by complete_time
 	"""
+	# Initialize solution matrix
+	S = [[0] * (W + 1)] * (n + 1)
+	
+	# Iterate through possible times / weights 
+	for v in range(1,(W + 1)):
+		# Iterate through each Reminder 
+		for j in range(1, (n + 1)):
+			S[j][v] = S[j - 1][v]
+			w_j = w[j - 1]
+			c_j = c[j - 1]
+			if (w_j <= v) and (S[j - 1][v - w_j] > S[j][v]):
+				S[j][v] = S[j - 1][v - w_j] + c_j 
+
+	# Display the Solution matrix
+	for i in range(0, (n + 1)):
+		print(S[i])
+
+	return S[n][W]
+		
 
 def main():
 	# Lets create some reminders
-	reminder_1 = Reminder(1, "dog", 2, 6, 1)
+	reminder_1 = Reminder(1, "dog", 2, 7, 1)
 	reminder_2 = Reminder(2, "cat", 8, 4, 3)
-	reminder_3 = Reminder(3, "wolf",1, 12, 2)
+	reminder_3 = Reminder(3, "wolf", 1, 5, 2)
 	reminder_4 = Reminder(4, "shark", 9, 4, 10)
 	reminders = [reminder_1, reminder_2, reminder_3, reminder_4]
-	p = prioritize(reminders)
-	print(p)
+	# And generate their priorities 
+	priorities = prioritize(reminders)
+	print("priorities : " + str(priorities))
+
+	# Time to generate the value and weight lists
+	r_ids = list(priorities.keys())
+	r_ids.sort()
+	c_w = []
+	for r_id in r_ids:
+		c_w += [[priorities[r_id], reminders[r_id - 1].complete_time]]	
+	c_w.sort(key = lambda x:x[1])
+	n_c_w = np.array(c_w)
+	c = list(n_c_w[:,0])
+	w = list(n_c_w[:,1])
+	print("c: " + str(c))
+	print("w: " + str(w))
+
+	# Establish other knapsack paramters
+	W = 10 
+	n = len(reminders)
+
+
 
 main()
